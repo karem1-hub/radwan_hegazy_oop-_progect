@@ -1,0 +1,84 @@
+from abc import ABC, abstractmethod
+from datetime import datetime
+
+# 1. إنشاء فئة شخص (Person Class)
+class Person:
+    def __init__(self, name, country, date_of_birth):
+        self.name = name
+        self.country = country
+        self.date_of_birth = date_of_birth
+
+    def determine_age(self):
+        today = datetime.today()
+        birth_date = datetime.strptime(self.date_of_birth, "%Y-%m-%d")
+        age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
+        return age
+
+    def print_name(self):
+        print(f"Name: {self.name}")
+
+    def print_country(self):
+        print(f"Country: {self.country}")
+
+# 2. تطبيق مبدأ الوراثة (Inheritance)
+class Employee(Person):
+    def __init__(self, name, country, date_of_birth, job_title):
+        super().__init__(name, country, date_of_birth)
+        self.job_title = job_title
+
+    def print_job_title(self):
+        print(f"Job Title: {self.job_title}")
+
+    # 3. تطبيق مبدأ تعدد الأشكال (Polymorphism)
+    def print_name(self):
+        print(f"Employee Name: {self.name}")
+
+# 4. إنشاء فئة مجردة (Abstract Class)
+class AbstractPerson(ABC):
+    @abstractmethod
+    def determine_age(self):
+        pass
+
+    @abstractmethod
+    def print_name(self):
+        pass
+
+    @abstractmethod
+    def print_country(self):
+        pass
+
+# فئة فرعية من الفئة المجردة
+class ConcretePerson(AbstractPerson):
+    def __init__(self, name, country, date_of_birth):
+        self.name = name
+        self.country = country
+        self.date_of_birth = date_of_birth
+
+    def determine_age(self):
+        today = datetime.today()
+        birth_date = datetime.strptime(self.date_of_birth, "%Y-%m-%d")
+        age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
+        return age
+
+    def print_name(self):
+        print(f"Name: {self.name}")
+
+    def print_country(self):
+        print(f"Country: {self.country}")
+
+# أمثلة على الاستخدام
+person = Person("John Doe", "USA", "1990-01-01")
+person.print_name()
+person.print_country()
+print(f"Age: {person.determine_age()}")
+
+employee = Employee("Jane Doe", "Canada", "1985-05-15", "Engineer")
+employee.print_name()
+employee.print_country()
+employee.print_job_title()
+print(f"Age: {employee.determine_age()}")
+
+concrete_person = ConcretePerson("Alice", "UK", "2000-07-20")
+concrete_person.print_name()
+concrete_person.print_country()
+print(f"Age: {concrete_person.determine_age()}")
